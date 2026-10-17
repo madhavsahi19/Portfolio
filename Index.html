@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Madhav Sahi — Settings</title>
+<meta name="description" content="Madhav Sahi, MBA Tech Data Science. Education, skills, projects and experience.">
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --sidebar: rgba(236, 236, 240, 0.72);
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --line: rgba(0,0,0,0.09);
+    --blue: #0071e3;
+    --green: #34c759;
+    --hover: rgba(0,0,0,0.045);
+    --select: rgba(0,0,0,0.08);
+    --shadow: 0 1px 2px rgba(0,0,0,0.05), 0 0 0 0.5px rgba(0,0,0,0.04);
+    --ease: cubic-bezier(.25,.1,.25,1);
+    --spring: cubic-bezier(.34,1.4,.64,1);
+  }
+  [data-theme="dark"] {
+    --bg: #1c1c1e; --sidebar: rgba(40,40,44,0.7); --card: #2c2c2e; --text: #f5f5f7;
+    --muted: #98989d; --line: rgba(255,255,255,0.1); --blue: #0a84ff; --green: #30d158;
+    --hover: rgba(255,255,255,0.05); --select: rgba(255,255,255,0.1); --shadow: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1c1c1e; --sidebar: rgba(40,40,44,0.7); --card: #2c2c2e; --text: #f5f5f7;
+      --muted: #98989d; --line: rgba(255,255,255,0.1); --blue: #0a84ff; --green: #30d158;
+      --hover: rgba(255,255,255,0.05); --select: rgba(255,255,255,0.1); --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px; line-height: 1.45; overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color .4s var(--ease), color .4s var(--ease);
+  }
+  .app { display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; }
+
+  aside {
+    background: var(--sidebar);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    backdrop-filter: saturate(180%) blur(24px);
+    border-right: 0.5px solid var(--line);
+    padding: 14px 12px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    transition: background-color .4s var(--ease);
+  }
+  .search-wrap { position: relative; }
+  .search-wrap svg {
+    position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
+    width: 14px; height: 14px; fill: var(--muted); pointer-events: none;
+  }
+  .search {
+    width: 100%; padding: 6px 28px; border-radius: 8px; border: none;
+    background: var(--select); color: var(--text); font: inherit; font-size: 14px;
+    transition: background-color .25s var(--ease), box-shadow .25s var(--ease);
+    appearance: none; -webkit-appearance: none;
+  }
+  .search::placeholder { color: var(--muted); }
+  .search:focus { outline: none; background: var(--card); box-shadow: 0 0 0 3px rgba(0,113,227,.35); }
+  .search::-webkit-search-cancel-button { display: none; }
+
+  .profile-card {
+    display: flex; gap: 11px; align-items: center;
+    padding: 9px 10px; margin: 14px 0 10px; border-radius: 10px; cursor: pointer;
+    transition: background-color .2s var(--ease), transform .2s var(--ease);
+  }
+  .profile-card:hover { background: var(--hover); }
+  .profile-card:active { transform: scale(.98); }
+  .profile-card.active { background: var(--select); }
+  .avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: linear-gradient(135deg, #0a84ff, #bf5af2);
+    color: #fff; display: grid; place-items: center;
+    font-weight: 600; font-size: 16px; flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  }
+  .profile-card .name { font-weight: 600; }
+  .profile-card .sub { color: var(--muted); font-size: 13px; }
+
+  nav { display: flex; flex-direction: column; gap: 2px; }
+  nav button {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    background: none; border: none; color: var(--text);
+    padding: 6px 10px; border-radius: 7px; font: inherit; font-size: 14px; text-align: left; cursor: pointer;
+    transition: background-color .18s var(--ease), color .18s var(--ease), transform .15s var(--ease);
+  }
+  nav button:hover { background: var(--hover); }
+  nav button:active { transform: scale(.985); }
+  nav button.active { background: var(--blue); color: #fff; }
+  nav .ico {
+    width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center;
+    font-size: 12px; color: #fff; flex-shrink: 0; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.1);
+  }
+  .nav-label { white-space: nowrap; }
+
+  main { padding: 30px 40px 60px; max-width: 780px; width: 100%; }
+  h1 { font-size: 26px; margin: 0 0 16px; font-weight: 700; letter-spacing: -.01em; }
+  h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--muted); margin: 22px 0 8px 14px; font-weight: 600;
+  }
+  .group {
+    background: var(--card); border-radius: 12px; box-shadow: var(--shadow);
+    overflow: hidden; border: 0.5px solid var(--line);
+    transition: background-color .4s var(--ease);
+  }
+  .row {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+    padding: 11px 16px; border-top: 0.5px solid var(--line);
+    transition: background-color .15s var(--ease), opacity .25s var(--ease);
+  }
+  .row:first-child { border-top: none; }
+  .row:hover { background: var(--hover); }
+  .row .k { font-weight: 500; flex-shrink: 0; }
+  .row .v { color: var(--muted); text-align: right; word-break: break-word; }
+  .row.block { display: block; }
+  .row.block .k { margin-bottom: 3px; }
+  .row.block .v { text-align: left; }
+  .row.block .v.plain { color: var(--text); }
+  .row.hidden { display: none; }
+  .tag {
+    display: inline-block; background: var(--hover); border: 0.5px solid var(--line);
+    border-radius: 999px; padding: 2px 10px; margin: 3px 4px 0 0; font-size: 13px; color: var(--text);
+  }
+  .toggle {
+    width: 44px; height: 26px; border-radius: 13px; border: none; cursor: pointer;
+    background: #8e8e93; position: relative; flex-shrink: 0;
+    transition: background-color .3s var(--ease);
+  }
+  .toggle::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px;
+    background: #fff; border-radius: 50%;
+    transition: transform .35s var(--spring); box-shadow: 0 2px 4px rgba(0,0,0,.25);
+  }
+  .toggle[aria-checked="true"] { background: var(--green); }
+  .toggle[aria-checked="true"]::after { transform: translateX(18px); }
+  .toggle:active::after { width: 26px; }
+  .toggle[aria-checked="true"]:active::after { transform: translateX(14px); }
+  .toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .link { color: var(--blue); text-decoration: none; word-break: break-all; }
+  .link:hover { text-decoration: underline; }
+  .bar {
+    height: 8px; background: var(--hover); border-radius: 4px; overflow: hidden; width: 140px; flex-shrink: 0;
+  }
+  .bar > span {
+    display: block; height: 100%; background: var(--blue); border-radius: 4px;
+    transform-origin: left; animation: grow .9s var(--ease) both;
+  }
+  @keyframes grow { from { transform: scaleX(0); } }
+  .skill-row { align-items: center; }
+  .skill-row .meta { display: flex; align-items: center; gap: 12px; }
+  .pct { color: var(--muted); font-size: 13px; width: 84px; text-align: right; }
+  .role-meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+  .pane { display: none; }
+  .pane.active { display: block; animation: paneIn .38s var(--ease) both; }
+  @keyframes paneIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .empty { padding: 30px; text-align: center; color: var(--muted); display: none; }
+  .footer-note { color: var(--muted); font-size: 12px; margin: 22px 14px 0; }
+
+  @media (max-width: 760px) {
+    .app { grid-template-columns: 1fr; }
+    aside {
+      position: sticky; top: 0; height: auto; z-index: 10;
+      border-right: none; border-bottom: 0.5px solid var(--line);
+      padding: 10px 12px;
+    }
+    .profile-card { margin: 6px 0; padding: 6px 8px; }
+    .avatar { width: 36px; height: 36px; font-size: 13px; }
+    nav { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+    nav button { font-size: 14px; }
+    main { padding: 18px 14px 50px; }
+    h1 { font-size: 22px; }
+    .bar { width: 90px; }
+    .row { flex-direction: column; gap: 4px; }
+    .row .v { text-align: left; }
+    .pct { width: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="search-wrap">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+      <input class="search" id="search" type="search" placeholder="Search" aria-label="Search settings">
+    </div>
+
+    <div class="profile-card active" data-pane="about" role="button" tabindex="0">
+      <div class="avatar">MS</div>
+      <div>
+        <div class="name">Madhav Sahi</div>
+        <div class="sub">MBA Tech · Data Science</div>
+      </div>
+    </div>
+
+    <nav>
+      <button data-pane="experience"><span class="ico" style="background:#ff9f0a">★</span><span class="nav-label">Experience</span></button>
+      <button data-pane="internship"><span class="ico" style="background:#ff375f">✎</span><span class="nav-label">Internships</span></button>
+      <button data-pane="education"><span class="ico" style="background:#0a84ff">🎓</span><span class="nav-label">Education</span></button>
+      <button data-pane="skills"><span class="ico" style="background:#30d158">⚙</span><span class="nav-label">Skills</span></button>
+      <button data-pane="projects"><span class="ico" style="background:#bf5af2">◆</span><span class="nav-label">Projects</span></button>
+      <button data-pane="achievements"><span class="ico" style="background:#ffd60a;color:#1d1d1f">🏆</span><span class="nav-label">Achievements</span></button>
+      <button data-pane="contact"><span class="ico" style="background:#64d2ff">@</span><span class="nav-label">Contact</span></button>
+      <button data-pane="display"><span class="ico" style="background:#8e8e93">◐</span><span class="nav-label">Display</span></button>
+    </nav>
+  </aside>
+
+  <main>
+    <!-- ABOUT -->
+    <section class="pane active" id="pane-about">
+      <h1>Madhav Sahi</h1>
+      <div class="group">
+        <div class="row"><span class="k">Program</span><span class="v">MBA Tech, Data Science stream</span></div>
+        <div class="row"><span class="k">Institute</span><span class="v">Mukesh Patel School of Technology Management &amp; Engineering, NMIMS Mumbai</span></div>
+        <div class="row"><span class="k">Batch</span><span class="v">Class of 2029</span></div>
+        <div class="row"><span class="k">Status</span><span class="v">Currently pursuing</span></div>
+      </div>
+      <h2>Summary</h2>
+      <div class="group">
+        <div class="row block">
+          <div class="k">About me</div>
+          <div class="v plain">I work where business and data meet. I clean and model messy data, build dashboards people actually use, and lead student teams that run outreach and publicity for college events.</div>
+        </div>
+      </div>
+      <h2>Availability</h2>
+      <div class="group">
+        <div class="row">
+          <span class="k">Open to internships</span>
+          <button class="toggle" id="openToggle" role="switch" aria-checked="true" aria-label="Open to internships"></button>
+        </div>
+        <div class="row"><span class="k">Looking for</span><span class="v" id="lookingFor">Data analytics and business intelligence roles</span></div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="pane" id="pane-experience">
+      <h1>Experience</h1>
+      <h2>Leadership</h2>
+      <div class="group">
+        <div class="row"><span class="k">SATTVA</span><span class="v">Head of Outreach Department</span></div>
+        <div class="row"><span class="k">SATTVA</span><span class="v">Sub-Head of Outreach Department</span></div>
+        <div class="row"><span class="k">Outreach</span><span class="v">Joint Secretary of Outreach Committee</span></div>
+        <div class="row"><span class="k">The Editorial Project</span><span class="v">Head of Outreach Department</span></div>
+        <div class="row"><span class="k">Venture Nexus</span><span class="v">Head of Publicity Department</span></div>
+        <div class="row"><span class="k">4C</span><span class="v">Head of Publicity Department</span></div>
+        <div class="row"><span class="k">Colloquim</span><span class="v">Senior Executive, Publicity Department</span></div>
+      </div>
+    </section>
+
+    <!-- INTERNSHIPS -->
+    <section class="pane" id="pane-internship">
+      <h1>Internships</h1>
+      <h2>Technical · IDDS</h2>
+      <div class="group">
+        <div class="row block">
+          <div class="k">Tech Intern</div>
+          <div class="role-meta">IDDS</div>
+          <div class="v plain" style="margin-top:6px">• Built a monitoring dashboard to track device data and surface issues at a glance<br>• Worked on data flow and dashboard logic end to end<br>• Turned raw device metrics into views a non-technical team could read</div>
+        </div>
+      </div>
+      <h2>Marketing · Hivess</h2>
+      <div class="group">
+        <div class="row block">
+          <div class="k">Marketing Intern</div>
+          <div class="v plain">• Assisted in planning and executing digital marketing campaigns<br>• Worked on social media content strategy and audience engagement<br>• Conducted market research and competitor analysis<br>• Contributed to improving brand visibility and outreach</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="pane" id="pane-education">
+      <h1>Education</h1>
+      <h2>Degree</h2>
+      <div class="group">
+        <div class="row"><span class="k">MBA Tech</span><span class="v">Mukesh Patel School of Technology Management &amp; Engineering, NMIMS Mumbai · Currently pursuing · CGPA 7.2</span></div>
+      </div>
+      <h2>School</h2>
+      <div class="group">
+        <div class="row"><span class="k">Class XII · CBSE</span><span class="v">RD Rajpal Public School · 2023 · 76%</span></div>
+        <div class="row"><span class="k">Class X · CBSE</span><span class="v">RD Rajpal Public School · 2021 · 84.8%</span></div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="pane" id="pane-skills">
+      <h1>Skills</h1>
+      <h2>Programming &amp; Tools</h2>
+      <div class="group">
+        <div class="row skill-row"><span class="k">Python</span><div class="meta"><div class="bar"><span style="width:90%"></span></div><span class="pct">Advanced</span></div></div>
+        <div class="row skill-row"><span class="k">R</span><div class="meta"><div class="bar"><span style="width:65%"></span></div><span class="pct">Intermediate</span></div></div>
+        <div class="row skill-row"><span class="k">C</span><div class="meta"><div class="bar"><span style="width:60%"></span></div><span class="pct">Intermediate</span></div></div>
+        <div class="row skill-row"><span class="k">SQL</span><div class="meta"><div class="bar"><span style="width:40%"></span></div><span class="pct">Basic</span></div></div>
+        <div class="row"><span class="k">Other tools</span><span class="v">Android Studio · AutoCAD</span></div>
+      </div>
+      <h2>Data &amp; BI</h2>
+      <div class="group">
+        <div class="row block">
+          <div class="k">Analysis</div>
+          <div class="v plain"><span class="tag">Data cleaning</span><span class="tag">Transformation</span><span class="tag">Feature engineering</span><span class="tag">Model evaluation</span></div>
+        </div>
+        <div class="row block">
+          <div class="k">Visualisation &amp; BI</div>
+          <div class="v plain"><span class="tag">Power BI</span><span class="tag">Tableau</span><span class="tag">Excel</span><span class="tag">Business visualisation</span></div>
+        </div>
+      </div>
+      <h2>Working Style</h2>
+      <div class="group">
+        <div class="row block">
+          <div class="k">Non-technical</div>
+          <div class="v plain"><span class="tag">Communication</span><span class="tag">Problem-solving</span><span class="tag">Goal-oriented</span><span class="tag">Clarity in requirements</span><span class="tag">Collaboration</span><span class="tag">Initiative</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="pane" id="pane-projects">
+      <h1>Projects</h1>
+      <h2>Featured</h2>
+      <div class="group">
+        <div class="row block">
+          <div class="k">StochClaim</div>
+          <div class="v plain">An end-to-end insurance fraud detection platform. A five-layer stochastic AI pipeline takes claims from data ingestion through to an interactive dashboard.</div>
+        </div>
+        <div class="row block">
+          <div class="k">ETL Data Warehousing (Superstore)</div>
+          <div class="v plain">Turned a raw, redundant Kaggle Superstore CSV into a clean, normalised data warehouse using a star schema.</div>
+        </div>
+        <div class="row block">
+          <div class="k">QuantumDNA</div>
+          <div class="v plain">A multi-table DBMS with circuit fingerprinting.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="pane" id="pane-achievements">
+      <h1>Achievements</h1>
+      <div class="group">
+        <div class="row block"><div class="v plain">• Demonstrated leadership through multiple head and executive roles</div></div>
+        <div class="row block"><div class="v plain">• Strong team management and coordination experience</div></div>
+        <div class="row block"><div class="v plain">• Active participation in events, publicity and outreach initiatives</div></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="pane" id="pane-contact">
+      <h1>Contact</h1>
+      <div class="group">
+        <div class="row"><span class="k">Email</span><a class="link" href="mailto:madhavsahi19@gmail.com">madhavsahi19@gmail.com</a></div>
+        <div class="row"><span class="k">GitHub</span><a class="link" href="https://github.com/madhavsahi19" target="_blank" rel="noopener">github.com/madhavsahi19</a></div>
+        <div class="row"><span class="k">LinkedIn</span><a class="link" href="https://www.linkedin.com/in/madhav-sahi-3b6275289" target="_blank" rel="noopener">linkedin.com/in/madhav-sahi-3b6275289</a></div>
+      </div>
+    </section>
+
+    <!-- DISPLAY -->
+    <section class="pane" id="pane-display">
+      <h1>Display</h1>
+      <div class="group">
+        <div class="row">
+          <span class="k">Dark appearance</span>
+          <button class="toggle" id="themeToggle" role="switch" aria-checked="false" aria-label="Dark appearance"></button>
+        </div>
+      </div>
+      <p class="footer-note">Tip: the search box above filters every section.</p>
+    </section>
+
+    <div class="empty" id="empty">No results</div>
+  </main>
+</div>
+
+<script>
+const panes = [...document.querySelectorAll(".pane")];
+const navBtns = [...document.querySelectorAll("nav button")];
+const profile = document.querySelector(".profile-card");
+const searchBox = document.getElementById("search");
+const emptyMsg = document.getElementById("empty");
+
+function show(name) {
+  if (!document.getElementById("pane-" + name)) return;
+  panes.forEach(p => p.classList.toggle("active", p.id === "pane-" + name));
+  navBtns.forEach(b => b.classList.toggle("active", b.dataset.pane === name));
+  profile.classList.toggle("active", name === "about");
+  history.replaceState(null, "", "#" + name);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+navBtns.forEach(b => b.addEventListener("click", () => {
+  searchBox.value = "";
+  filter("");
+  show(b.dataset.pane);
+}));
+profile.addEventListener("click", () => { searchBox.value = ""; filter(""); show("about"); });
+profile.addEventListener("keydown", e => { if (e.key === "Enter") show("about"); });
+
+/* Search: clears filters, then jumps to the first section with a match */
+function filter(q) {
+  q = q.trim().toLowerCase();
+  document.querySelectorAll(".row").forEach(r => r.classList.remove("hidden"));
+  if (!q) { emptyMsg.style.display = "none"; return; }
+
+  let firstPane = null, total = 0;
+  panes.forEach(p => {
+    let hits = 0;
+    p.querySelectorAll(".row").forEach(r => {
+      const match = r.textContent.toLowerCase().includes(q);
+      r.classList.toggle("hidden", !match);
+      if (match) hits++;
+    });
+    total += hits;
+    if (hits && !firstPane) firstPane = p;
+  });
+
+  emptyMsg.style.display = total ? "none" : "block";
+  if (firstPane && !firstPane.classList.contains("active")) {
+    show(firstPane.id.replace("pane-", ""));
+    // show() does not change row visibility, so the filter still applies to the new pane
+  }
+}
+searchBox.addEventListener("input", e => filter(e.target.value));
+
+/* Availability toggle */
+const openToggle = document.getElementById("openToggle");
+const lookingFor = document.getElementById("lookingFor");
+openToggle.addEventListener("click", () => {
+  const on = openToggle.getAttribute("aria-checked") !== "true";
+  openToggle.setAttribute("aria-checked", on);
+  lookingFor.style.opacity = 0;
+  setTimeout(() => {
+    lookingFor.textContent = on
+      ? "Data analytics and business intelligence roles"
+      : "Not currently looking";
+    lookingFor.style.opacity = 1;
+  }, 150);
+});
+
+/* Dark appearance toggle */
+const themeToggle = document.getElementById("themeToggle");
+themeToggle.addEventListener("click", () => {
+  const dark = themeToggle.getAttribute("aria-checked") !== "true";
+  themeToggle.setAttribute("aria-checked", dark);
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+});
+
+/* Deep link, e.g. index.html#skills */
+const start = location.hash.replace("#", "");
+if (start && document.getElementById("pane-" + start)) show(start);
+</script>
+</body>
+</html>
